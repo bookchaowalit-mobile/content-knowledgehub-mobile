@@ -1,5 +1,19 @@
 # Knowledgehub — Mobile
 
+## Template copy
+
+This repo is one of the name-substituted SwiftUI template copies in
+`bookchaowalit-mobile`: it shares the SwiftPM layout (`<Name>Core` +
+`<Name>UI` + XCTest target), the placeholder tab shell and the CI of the
+canonical template, [`bookchaowalit-mobile/marketing-linktree-mobile`](https://github.com/bookchaowalit-mobile/marketing-linktree-mobile).
+Only the small `Core` domain module differs. Consolidation or archiving is
+pending owner decision D5 (BD-033), see
+`repository-catalog/portfolio/MOBILE-CONSOLIDATION-2026-10.md` in solo-empire.
+
+CI (`.github/workflows/build.yml`): `swift build` + `swift test` on macOS 14
+with Xcode 15.4 (Swift 5.10), fail-closed, plus the shared `security.yml`
+scans (gitleaks, Semgrep, OSV-Scanner, Trivy) from `platform-ci-workflows` v1.1.1.
+
 SwiftUI app for **Knowledgehub** — a personal wiki of linked notes.
 
 Part of [Chaowalit Greepoke](https://bookchaowalit.com)'s 101 Portfolio Projects.

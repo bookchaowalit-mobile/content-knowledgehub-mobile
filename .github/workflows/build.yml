@@ -5,17 +5,37 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Swift toolchain pin: Xcode 15.4 ships Swift 5.10 (matches swift-tools-version in Package.swift).
+  XCODE_VERSION: "15.4"
+
 jobs:
   build:
-    name: Build & Test (SwiftPM)
+    name: Build & Test (SwiftPM, fail-closed)
     runs-on: macos-14
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Select Xcode ${{ env.XCODE_VERSION }}
+        run: |
+          sudo xcode-select -s "/Applications/Xcode_${XCODE_VERSION}.app"
+          xcodebuild -version
+          swift --version
       - name: Build
         run: swift build
       - name: Test
         run: swift test
+
+  security:
+    uses: bookchaowalit/platform-ci-workflows/.github/workflows/security.yml@87dc5e1c7e0416886a6371d5a101bb2ccba38edd # v1.1.1
